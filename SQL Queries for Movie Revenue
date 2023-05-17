@@ -1,0 +1,41 @@
+## SQL query to determine rental rate for each genre
+
+SELECT A.rental_rate, C.name, COUNT(C.name)
+FROM film A
+INNER JOIN film_category B on A.film_id=B.film_id
+INNER JOIN category C on B.category_id=C.category_id
+GROUP BY C.name, A.rental_rate
+ORDER by C.name ASC
+
+## SQL query to determine revenue breakdown per film
+
+SELECT A.title, SUM(D.amount) AS total_amount
+FROM film A
+INNER JOIN inventory B on A.film_id=B.film_id
+INNER JOIN rental C on B.inventory_id=C.inventory_id
+INNER JOIN payment D on C. rental_id=D.rental_id
+GROUP BY A.title
+ORDER BY total_amount DESC
+
+## SQL query to determine revenue breakdown by genre
+
+SELECT A.name, SUM(E.amount) AS total_amount
+FROM category A
+INNER JOIN film_category B on A.category_id=B.category_id
+INNER JOIN inventory C on B.film_id=C.film_id
+INNER JOIN rental D on C.inventory_id=D.inventory_id
+INNER JOIN payment E on D.rental_id=E.rental_id
+GROUP BY a.name
+ORDER BY total_amount DESC
+
+## SQL query to determine revenue breakdown by country
+
+SELECT A.country, SUM(F.amount) AS total_amount
+FROM country A
+INNER JOIN city B on A.country_id=B.country_id
+INNER JOIN address C on B.city_id=C.city_id
+INNER JOIN customer D on C.address_id=D.address_id
+INNER JOIN rental E on D.customer_id=E.customer_id
+INNER JOIN payment F on E.rental_id=F.rental_id
+GROUP BY A.country
+ORDER BY total_amount DESC
