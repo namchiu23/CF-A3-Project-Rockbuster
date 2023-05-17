@@ -1,0 +1,36 @@
+## SQL Query for top 10 countries with the highest number of customers
+
+SELECT D.country,
+  COUNT(customer_id)
+FROM customer A
+INNER JOIN address B on A.address_id=B.address_id
+INNER JOIN city C ON B.city_id=C.city_id
+INNER JOIN country D ON C.country_id=D.country_id
+GROUP BY country
+ORDER BY COUNT DESC
+LIMIT 10
+
+## SQL Query for top 10 cities in the countries with the highest number of customers
+
+SELECT C.city, D.country, COUNT(customer_id)
+FROM customer A
+INNER JOIN address B ON A.address_id=B.address_id
+INNER JOIN city C on B.city_id=C.city_id
+INNER JOIN country D on C.country_id=country_id
+WHERE country IN('India', 'China', 'United States', 'Japan', 'Mexico', 'Brazil', 'Russian Federation', 'Philippines', 'Turkey', 'Indonesia')
+GROUP BY country, city
+ORDER BY COUNT DESC
+LIMIT 10
+
+## SQL Query for identifying lifetime value customers
+
+SELECT A.customer_id, A.first_name, A.last_name, C.city, D.country, SUM(E.amount) AS total_paid
+FROM customer A
+INNER JOIN address B on A.address_id=B.address_id
+INNER JOIN city C on B.city_id=C.city_id
+INNER JOIN country D on C.country_id=D.country_id
+INNER JOIN payment E on A.customer_id=E.customer_id
+WHERE city IN('Aurora', 'Acua', 'Citrus Heights', 'Iwaki', 'Ambattur', 'Shanwei', 'So Leopoldo', 'Teboksary', 'Tianjin', 'Cianjur')
+GROUP BY A.customer_id, first_name, last_name, country, city
+ORDER BY total_paid DESC
+LIMIT 5
